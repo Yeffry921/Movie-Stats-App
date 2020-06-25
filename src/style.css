@@ -1,0 +1,25 @@
+.dropdown-content {
+  background-color: white;
+  border-radius: 4px;
+  box-shadow: 0 2px 3px rgba(10, 10, 10, 0.1), 0 0 0 1px rgba(10, 10, 10, 0.1);
+  padding-bottom: 0.5rem;
+  padding-top: 0.5rem;
+}
+.dropdown {
+  display: none;
+}
+.dropdown-menu {
+  /* left: 0;
+  min-width: 12rem;
+  padding-top: 4px;
+  position: absolute;
+  top: 100%;
+  z-index: 20; */
+}
+.dropdown-item {
+  display: flex;
+  height: 60px;
+  align-items: center;
+}
+
+/* Special classes */
