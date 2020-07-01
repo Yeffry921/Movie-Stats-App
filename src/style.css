@@ -1,24 +1,100 @@
-a > img {
-  width: 35px;
-  padding:0.3rem;
+* {
+	padding: 0;
+	margin: 0;
+	box-sizing: border-box;
 }
+
+/* Header */
+header {
+	background: #a8ff78;
+	/* fallback for old browsers */
+	background: -webkit-linear-gradient(to right, #78ffd6, #a8ff78);
+	/* Chrome 10-25, Safari 5.1-6 */
+	background: linear-gradient(to right, #78ffd6, #a8ff78);
+	/* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+	padding: 10px;
+	color: #444;
+	margin-bottom: 10px;
+}
+
+.movie-wrapper {
+	display: flex;
+}
+
+/* Auto complete drop down */
+.autocomplete-section {
+	position: relative;
+	flex: 1;
+	padding: 10px;
+}
+
 .dropdown {
-  margin-top: 0.5rem;
+	margin-top: 0.5rem;
+	display: none;
+	position: absolute;
+	top: 10;
+	left: 0;
 }
+
 .dropdown-content {
-  background-color: white;
-  border-radius: 4px;
-  box-shadow: 0 2px 3px rgba(10, 10, 10, 0.1), 0 0 0 1px rgba(10, 10, 10, 0.1);
-  padding-bottom: 0.5rem;
-  padding-top: 0.5rem;
-  padding-left: 0.5rem;
-} 
+	background-color: white;
+	border-radius: 4px;
+	box-shadow: 0 2px 3px rgba(10, 10, 10, 0.1), 0 0 0 1px rgba(10, 10, 10, 0.1);
+	padding-bottom: 0.5rem;
+	padding-top: 0.5rem;
+	padding-left: 0.5rem;
+	overflow-y: scroll;
+	max-height: 25rem;
+}
 
 .dropdown-item {
-  display: flex;
-  height: 60px;
-  align-items: center;
+	display: flex;
+	height: 60px;
+	align-items: center;
 }
 
+/* Input */
+#search {
+	padding: 5px;
+	border: #444 solid 1px;
+}
 
-/* Special classes */
+a {
+	color: #333;
+	text-decoration: none;
+}
+
+a > img {
+	height: 50px;
+	padding: 0.3rem;
+}
+
+a:hover {
+	background-color: #666;
+	color: #fff;
+}
+
+/* MOVIE DATA SECTION */
+.movie-data-container {
+	
+}
+.movie-stat-section {
+  display: flex;
+  height: 40vh;
+}
+.movie-stat-section > div {
+  background: #00f260;
+	/* fallback for old browsers */
+	background: -webkit-linear-gradient(to right, #0575e6, #00f260);
+	/* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #0575e6, #00f260);
+  margin: 0 10px;
+}
+.movie-stat-section img {
+  height: auto;
+  margin: 0 15px;
+}
+.movie-data {
+  color: #fff;
+  margin: 10px;
+}
