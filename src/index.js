@@ -67,21 +67,22 @@ const globalAppController = ((movieCtrl, UICtrl) => {
 	console.log(DOMStrings);
 
 	const init = () => {
-		document.querySelector('.autocomplete-section').innerHTML = autoComplete();
+		document.querySelector(DOMStrings.autocompleteSection).innerHTML = autoComplete();
 		loadEventListeners();
 	};
-	console.log(DOMElements);
+
 	const loadEventListeners = () => {
-		document.querySelector('#search').addEventListener('input', onInput);
-		document.querySelector('.dropdown-content').addEventListener('click', getMovieStat);
+		document.querySelector(DOMStrings.search).addEventListener('input', onInput);
+		document.querySelector(DOMStrings.dropdownContent).addEventListener('click', getMovieStat);
 	};
 
 	const onInput = async (e) => {
 		const items = await movieCtrl.onMovieSearch(e.target.value).then((data) => {
 			return data;
 		});
-		// const dropdown = document.querySelector('.dropdown');
-		// const results = document.querySelector('.results');
+		
+    const dropdown = document.querySelector(DOMStrings.dropdown);
+    const results = document.querySelector(DOMStrings.results);
 
 		if (!items.length) {
 			dropdown.style.display = 'none';
@@ -125,12 +126,12 @@ const globalAppController = ((movieCtrl, UICtrl) => {
 		if (e.target.className === 'dropdown-item') {
 			const movieData = await movieCtrl.onMovieSelect(e.target.textContent);
 
-			document.querySelector('#search').value = '';
+			document.querySelector(DOMStrings.search).value = '';
 			dropdown.style.display = 'none';
-			document.querySelector('.movie-stat-section').innerHTML = '';
-			document.querySelector('.dropdown-content').classList.add('hide');
+			document.querySelector(DOMStrings.movieStatSection).innerHTML = '';
+			document.querySelector(DOMStrings.dropdownContent).classList.add('hide');
 
-			document.querySelector('.movie-stat-section').innerHTML += renderMovieStat(movieData);
+			document.querySelector(DOMStrings.movieStatSection).innerHTML += renderMovieStat(movieData);
 		}
 	};
 
