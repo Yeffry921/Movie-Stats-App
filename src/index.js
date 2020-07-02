@@ -64,11 +64,26 @@ const UIController = (() => {
       <h3 class="movie-data">Awards: ${data.Awards}</h3>
     </div>
     `;
-	};
+  };
+  const renderDropdownMovies = (movies) => {
+    movies.forEach((item) => {
+			let imgPoster = item.Poster;
+			if (imgPoster === 'N/A') {
+				imgPoster = '';
+			}
+			document.querySelector(DOMStrings.results).innerHTML += `
+      <a href="#" class="dropdown-item">
+        <img src=${imgPoster}>
+        ${item.Title}
+      </a>
+      `;
+		});
+  };
 
 	return {
     DOMStrings,
-    renderMovieStat
+    renderMovieStat,
+    renderDropdownMovies,
 	};
 })();
 
@@ -87,14 +102,14 @@ const globalAppController = ((movieCtrl, UICtrl) => {
 	};
 
 	const onInput = async (e) => {
-    
+    // Fetch Movie List
 		const items = await movieCtrl.onMovieSearch(e.target.value).then((data) => {
 			return data;
 		});
 		
     const dropdown = document.querySelector(DOMStrings.dropdown);
     const results = document.querySelector(DOMStrings.results);
-
+    // If there are no movies hide the dropdown and leave 
 		if (!items.length) {
 			dropdown.style.display = 'none';
 			// get out of function or the next line runs
@@ -104,19 +119,9 @@ const globalAppController = ((movieCtrl, UICtrl) => {
 
 		results.innerHTML = '';
 
-		items.forEach((item) => {
-			let imgPoster = item.Poster;
-			if (imgPoster === 'N/A') {
-				imgPoster = '';
-			}
-			results.innerHTML += `
-      <a href="#" class="dropdown-item">
-        <img src=${imgPoster}>
-        ${item.Title}
-      </a>
-      `;
-		});
-	};
+    renderDropdownMovies(items);
+  };
+  
   const clearAndHideDropdown = () => {
     const dropdown = document.querySelector(DOMStrings.dropdown);
 
