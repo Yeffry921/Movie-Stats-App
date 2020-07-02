@@ -87,6 +87,7 @@ const globalAppController = ((movieCtrl, UICtrl) => {
 	};
 
 	const onInput = async (e) => {
+    
 		const items = await movieCtrl.onMovieSearch(e.target.value).then((data) => {
 			return data;
 		});
@@ -116,19 +117,23 @@ const globalAppController = ((movieCtrl, UICtrl) => {
       `;
 		});
 	};
-
-	
-	const getMovieStat = async (e) => {
+  const clearAndHideDropdown = () => {
     const dropdown = document.querySelector(DOMStrings.dropdown);
+
+    document.querySelector(DOMStrings.search).value = '';
+		dropdown.style.display = 'none';
+  };
+  const clearAndRenderMovies = (movieData) => {
     const movieStatSection = document.querySelector(DOMStrings.movieStatSection);
 
+    movieStatSection.innerHTML = '';
+		movieStatSection.innerHTML += UICtrl.renderMovieStat(movieData);
+  }	;
+	const getMovieStat = async (e) => {
 		if (e.target.className === 'dropdown-item') {
 			const movieData = await movieCtrl.onMovieSelect(e.target.textContent);
-			document.querySelector(DOMStrings.search).value = '';
-			dropdown.style.display = 'none';
-			movieStatSection.innerHTML = '';
-			document.querySelector(DOMStrings.dropdownContent).classList.add('hide');
-			movieStatSection.innerHTML += renderMovieStat(movieData);
+      clearAndHideDropdown();
+      clearAndRenderMovies(movieData);
 		}
 	};
 	return {
