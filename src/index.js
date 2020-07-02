@@ -1,6 +1,3 @@
-// Project layout - Basic Idea
-// 1- User types a movie and a list of movies matching show up
-// 2- When the user clicks the give movie, stats about that movie show
 import { autoComplete } from './autocomplete';
 import './style.css';
 
@@ -64,7 +61,6 @@ const UIController = (() => {
 // GLOBAL CONTROLLER
 const globalAppController = ((movieCtrl, UICtrl) => {
 	const DOMStrings = UICtrl.DOMStrings;
-	console.log(DOMStrings);
 
 	const init = () => {
 		document.querySelector(DOMStrings.autocompleteSection).innerHTML = autoComplete();
@@ -98,7 +94,6 @@ const globalAppController = ((movieCtrl, UICtrl) => {
 			if (imgPoster === 'N/A') {
 				imgPoster = '';
 			}
-
 			results.innerHTML += `
       <a href="#" class="dropdown-item">
         <img src=${imgPoster}>
@@ -109,8 +104,6 @@ const globalAppController = ((movieCtrl, UICtrl) => {
 	};
 
 	const renderMovieStat = (data) => {
-		// boxOffice genre,runtime year rating
-		console.log(data);
 		return `
     <img src=${data.Poster}>
     <div>
@@ -125,16 +118,13 @@ const globalAppController = ((movieCtrl, UICtrl) => {
 	const getMovieStat = async (e) => {
 		if (e.target.className === 'dropdown-item') {
 			const movieData = await movieCtrl.onMovieSelect(e.target.textContent);
-
 			document.querySelector(DOMStrings.search).value = '';
 			dropdown.style.display = 'none';
 			document.querySelector(DOMStrings.movieStatSection).innerHTML = '';
 			document.querySelector(DOMStrings.dropdownContent).classList.add('hide');
-
 			document.querySelector(DOMStrings.movieStatSection).innerHTML += renderMovieStat(movieData);
 		}
 	};
-
 	return {
 		init
 	};
