@@ -51,10 +51,24 @@ const UIController = (() => {
 		dropdownContent: '.dropdown-content',
     autocompleteSection: '.autocomplete-section',
     movieStatSection: '.movie-stat-section',
+  };
+  
+  const renderMovieStat = (data) => {
+		return `
+    <img src=${data.Poster}>
+    <div>
+      <h3 class="movie-data">Box Office: ${data.BoxOffice}</h3>
+      <h3 class="movie-data">Genres: ${data.Genre}</h3>
+      <h3 class="movie-data">Release Date: ${data.Released}</h3>
+      <h3 class="movie-data">Rating: ${data.Rated}</h3>
+      <h3 class="movie-data">Awards: ${data.Awards}</h3>
+    </div>
+    `;
 	};
 
 	return {
-		DOMStrings
+    DOMStrings,
+    renderMovieStat
 	};
 })();
 
@@ -103,26 +117,18 @@ const globalAppController = ((movieCtrl, UICtrl) => {
 		});
 	};
 
-	const renderMovieStat = (data) => {
-		return `
-    <img src=${data.Poster}>
-    <div>
-      <h3 class="movie-data">Box Office: ${data.BoxOffice}</h3>
-      <h3 class="movie-data">Genres: ${data.Genre}</h3>
-      <h3 class="movie-data">Release Date: ${data.Released}</h3>
-      <h3 class="movie-data">Rating: ${data.Rated}</h3>
-      <h3 class="movie-data">Awards: ${data.Awards}</h3>
-    </div>
-    `;
-	};
+	
 	const getMovieStat = async (e) => {
+    const dropdown = document.querySelector(DOMStrings.dropdown);
+    const movieStatSection = document.querySelector(DOMStrings.movieStatSection);
+
 		if (e.target.className === 'dropdown-item') {
 			const movieData = await movieCtrl.onMovieSelect(e.target.textContent);
 			document.querySelector(DOMStrings.search).value = '';
 			dropdown.style.display = 'none';
-			document.querySelector(DOMStrings.movieStatSection).innerHTML = '';
+			movieStatSection.innerHTML = '';
 			document.querySelector(DOMStrings.dropdownContent).classList.add('hide');
-			document.querySelector(DOMStrings.movieStatSection).innerHTML += renderMovieStat(movieData);
+			movieStatSection.innerHTML += renderMovieStat(movieData);
 		}
 	};
 	return {
