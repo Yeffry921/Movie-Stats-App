@@ -1,5 +1,5 @@
 const autoComplete = () => {
-	return `
+  return `
   <div class="autocomplete">
     <label for="search">Search</label>
     <input type="text" id="search" name="search">
