@@ -6,7 +6,6 @@ import './style.css';
 
 // MOVIE CONTROLLER
 const movieController = (() => {
-
 	const key = '6d5ddc8d';
 	const onMovieSearch = async (searchTerm) => {
 		const response = await fetch(`http://www.omdbapi.com/?apikey=${key}&s=${searchTerm}`)
@@ -38,66 +37,80 @@ const movieController = (() => {
 			});
 
 		return response;
-  };
-  
-  return {
-    onMovieSearch,
-    onMovieSelect,
-  }
+	};
+
+	return {
+		onMovieSearch,
+		onMovieSelect
+	};
 })();
 
 // UI CONTROLLLER
-const UIController = (() => {})();
+const UIController = (() => {
+	const DOMStrings = {
+		dropdown: '.dropdown',
+		results: '.results',
+		search: '#search',
+		dropdownContent: '.dropdown-content',
+    autocompleteSection: '.autocomplete-section',
+    movieStatSection: '.movie-stat-section',
+	};
 
+	return {
+		DOMStrings
+	};
+})();
 
 // GLOBAL CONTROLLER
 const globalAppController = ((movieCtrl, UICtrl) => {
+	const DOMStrings = UICtrl.DOMStrings;
+	console.log(DOMStrings);
+
 	const init = () => {
-    document.querySelector('.autocomplete-section').innerHTML = autoComplete();
+		document.querySelector('.autocomplete-section').innerHTML = autoComplete();
 		loadEventListeners();
 	};
-
+	console.log(DOMElements);
 	const loadEventListeners = () => {
 		document.querySelector('#search').addEventListener('input', onInput);
-		document.querySelector('.dropdown-content').addEventListener('click',getMovieStat);
-  };
+		document.querySelector('.dropdown-content').addEventListener('click', getMovieStat);
+	};
 
-  const dropdown = document.querySelector('.dropdown');
-  const results = document.querySelector('.results');
+	const onInput = async (e) => {
+		const items = await movieCtrl.onMovieSearch(e.target.value).then((data) => {
+			return data;
+		});
+		// const dropdown = document.querySelector('.dropdown');
+		// const results = document.querySelector('.results');
 
-  const onInput = async (e) => {
-    const items = await movieCtrl.onMovieSearch(e.target.value).then((data) => {
-      return data;
-    });
-  
-    if (!items.length) {
-      dropdown.style.display = 'none';
-      // get out of function or the next line runs
-      return;
-    }
-    dropdown.style.display = 'block';
-  
-    results.innerHTML = '';
-  
-    items.forEach((item) => {
-      let imgPoster = item.Poster;
-      if (imgPoster === 'N/A') {
-        imgPoster = '';
-      }
-  
-      results.innerHTML += `
+		if (!items.length) {
+			dropdown.style.display = 'none';
+			// get out of function or the next line runs
+			return;
+		}
+		dropdown.style.display = 'block';
+
+		results.innerHTML = '';
+
+		items.forEach((item) => {
+			let imgPoster = item.Poster;
+			if (imgPoster === 'N/A') {
+				imgPoster = '';
+			}
+
+			results.innerHTML += `
       <a href="#" class="dropdown-item">
         <img src=${imgPoster}>
         ${item.Title}
       </a>
       `;
-    });
-  };
-  
-  const renderMovieStat = (data) => {
-    // boxOffice genre,runtime year rating
-    console.log(data);
-    return `
+		});
+	};
+
+	const renderMovieStat = (data) => {
+		// boxOffice genre,runtime year rating
+		console.log(data);
+		return `
     <img src=${data.Poster}>
     <div>
       <h3 class="movie-data">Box Office: ${data.BoxOffice}</h3>
@@ -107,19 +120,19 @@ const globalAppController = ((movieCtrl, UICtrl) => {
       <h3 class="movie-data">Awards: ${data.Awards}</h3>
     </div>
     `;
-  };
-  const getMovieStat = async (e) => {
-    if (e.target.className === 'dropdown-item') {
-      const movieData = await movieCtrl.onMovieSelect(e.target.textContent);
-  
-      document.querySelector('#search').value = '';
-      dropdown.style.display = 'none';
-      document.querySelector('.movie-stat-section').innerHTML = '';
-      document.querySelector('.dropdown-content').classList.add('hide');
-  
-      document.querySelector('.movie-stat-section').innerHTML += renderMovieStat(movieData);
-    }
-  };
+	};
+	const getMovieStat = async (e) => {
+		if (e.target.className === 'dropdown-item') {
+			const movieData = await movieCtrl.onMovieSelect(e.target.textContent);
+
+			document.querySelector('#search').value = '';
+			dropdown.style.display = 'none';
+			document.querySelector('.movie-stat-section').innerHTML = '';
+			document.querySelector('.dropdown-content').classList.add('hide');
+
+			document.querySelector('.movie-stat-section').innerHTML += renderMovieStat(movieData);
+		}
+	};
 
 	return {
 		init
@@ -127,13 +140,6 @@ const globalAppController = ((movieCtrl, UICtrl) => {
 })(movieController, UIController);
 
 globalAppController.init();
-
-
-
-
-
-
-
 
 // When user clicks on the movie, clear the autocomplete and the search
 // Hide the autocomplete and then render the movie data
